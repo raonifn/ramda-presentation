@@ -95,24 +95,73 @@ const validUsersNamedBuzz = user =>
 
 ```javascript
 const validUsersNamedBuzz = R.filter(R.where(
- {
-   name: 'Buzz',
-   errors: R.isEmpty
- }));
- ```
+ { name: 'Buzz', errors: R.isEmpty })=);
+```
     
 
 ## Curry ##
 
+**Haskel Curry**
+
 ```javascript
-const a = 1;
-const a = (aa) => console.log('aaaa');
+// Normal function
+const aFunc = (a, b, c) => a * b + c;
+aFunct(1, 2, 3); // => 5
+
+//Curried function
+const anotheF = a => b => c => a * b + c;
+anotherF(1)(2)(3); // => 5
+
+const ramdaCurryF => R.curry((a, b, c) => a * b + c);
+ramdaCurryF(1, 2, 3); // => 5
+ramdaCurryF(1, 2)(3); // => 5
+ramdaCurryF(1)(2, 3); // => 5
+ramdaCurryF(1, 2); // => a function
+```
+
+### Namely specialisation ###
+
+```javascript
+const formatNames = R.curry((first, middle, last) => `${first} ${middle} ${last}`);
+formatNames('John', 'Paul', 'Jones'); //=> 'John Paul Jones'
+
+const jp = formatNames('John', 'Paul'); //=> returns a function
+jp('Jones'); //=> 'John Paul Jones' (Great Musician)
+jp('Stevens'); //=> 'John Paul Stevens' (the Supreme Court Justice)
+jp('Pontiff'); //=> 'John Paul Pontiff' (ok, so I cheated.)
+jp('Ziller'); //=> 'John Paul Ziller' (magician, a wee bit fictional)
+jp('Georgeandringo'); //=> 'John Paul Georgeandringo' (rockers)
+```
+
+### Namely composition ###
+
+```javascript
+const increment = x => x + 1
+const double = x => x * 2
+const doublePlusOne = x => increment(double(x))
+doublePlusOne(10); // => 21
+
+const twicePlusOne = R.compose(R.add(1), R.multiply(2));
+twicePlusOne(10); // => 21
+```
+
+## Composition ##
+
+#### Pipe to the rescue ####
+
+```javascript
+const mathPipe = R.pipe(
+  R.multiply(4),
+  R.add(2),
+  R.divide(2));
+mathPipe(10); // => 21
 ```
 
 
 ## References ##
 
-<https://itnext.io/a-beginners-guide-to-ramda-part-1-7e4a34972e97>
-<https://itnext.io/a-beginners-guide-to-ramda-part-2-lenses-62bdd3993598>
-<http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda>
-<https://hughfdjackson.com/javascript/why-curry-helps/>
+ * <https://itnext.io/a-beginners-guide-to-ramda-part-1-7e4a34972e97>
+ * <https://itnext.io/a-beginners-guide-to-ramda-part-2-lenses-62bdd3993598>
+ * <http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda>
+ * <https://fr.umio.us/why-ramda/>
+ * <https://hughfdjackson.com/javascript/why-curry-helps/>
