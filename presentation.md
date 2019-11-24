@@ -1,6 +1,6 @@
 # RamdaJS #
- - <https://ramdajs.com/>
 
+ * <https://ramdajs.com/>
 ```
 █████████████████████████████
 ██ ▄▄▄▄▄ █ ▀▀▄  ██▀█ ▄▄▄▄▄ ██
@@ -42,8 +42,10 @@ const R = require('ramda');
  * Purer Functional
    * Immutability
    * Side-effects
+
  * All functions are curried
    * It's easy composing functions
+
  * Parameter order is convinient to currying
    * Ramda takes the function first, and the data last
 
@@ -62,7 +64,7 @@ const value = moo({moo: 'cow'}); // => 'cow'
 // take an object with an `amount` property
 // add one to it
 // find its remainder when divided by 7
-var amtAdd1Mod7 = R.compose(R.moduloBy(7), R.add(1), R.prop('amount'));
+const amtAdd1Mod7 = R.compose(R.moduloBy(7), R.add(1), R.prop('amount'));
 
 // we can use that as is:
 amtAdd1Mod7({amount: 17}); // => 4
@@ -71,37 +73,32 @@ amtAdd1Mod7({amount: 68}); // => 6
 ``` 
 
 ```javascript
-// But we can also use our composed function on a list of objects, e.g. to `map`:
-var amountObjects = [
- {amount: 903}, {amount: 2875654}, {amount: 6}
-    ]
-    R.map(amtAdd1Mod7, amountObjects); // => [1, 6, 0]
+const amountObjects = [ {amount: 903}, {amount: 2875654}, {amount: 6} ]
+R.map(amtAdd1Mod7, amountObjects); // => [1, 6, 0]
 
-    // of course, `map` is also curried, so you can generate a new function 
-    // using `amtAdd1Mod7` that will wait for a list of "amountObjects" to 
-    // get passed in:
-    var amountsToValue = map(amtAdd1Mod7);
-    amountsToValue(amountObjects); // => [1, 6, 0]
+// of course, `map` is also curried, so you can generate a new function 
+// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to 
+// get passed in:
+const amountsToValue = map(amtAdd1Mod7);
+amountsToValue(amountObjects); // => [1, 6, 0]
 ```
 
 #### Undescore / Loadash Style ####
 
- ```javascript
-
- const validUsersNamedBuzz = user =>
-   _.filter(users, user =>
-      user.name === 'Buzz' && _.isEmpty(user.errors));
- ```
+```javascript
+const validUsersNamedBuzz = user =>
+  _.filter(users, user =>
+     user.name === 'Buzz' && _.isEmpty(user.errors));
+```
 
 #### Ramda Style ####
 
- ```javascript
-
- const validUsersNamedBuzz = R.filter(R.where(
-  {
-    name: 'Buzz',
-    errors: R.isEmpty
-  }));
+```javascript
+const validUsersNamedBuzz = R.filter(R.where(
+ {
+   name: 'Buzz',
+   errors: R.isEmpty
+ }));
  ```
     
 
