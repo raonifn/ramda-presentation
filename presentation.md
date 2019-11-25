@@ -29,8 +29,8 @@ d'...'xWMMMMMMMMMMMMMMMMMMMMMMMMK:. ..'l
 
 ## Who am I ##
 
-**Raoni Fortes Normanton** <raoni@dextra-sw.com>
-<https://github.com/raonifn>
+ * **Raoni Fortes Normanton** <raoni@dextra-sw.com>
+ * <https://github.com/raonifn>
 
  * Coder since 1996
  * Developer since 2000
@@ -64,6 +64,12 @@ npm install ramdajs
 ```javascript
 const R = require('ramda');
 ```
+
+### The name ###
+
+* They like Sheeps, and Rams.
+* `Lamb` ~= `Lambda`
+* Than, a grown-up `Lambda` => `Ramda`
 
 ## Topics ##
 
@@ -137,7 +143,7 @@ const validUsersNamedBuzz = user =>
 
 ```javascript
 const validUsersNamedBuzz = R.filter(R.where(
- { name: 'Buzz', errors: R.isEmpty })=);
+ { name: 'Buzz', errors: R.isEmpty }));
 ```
     
 
@@ -196,6 +202,132 @@ const mathPipe = R.pipe(
   R.divide(2));
 mathPipe(10); // => 21
 ```
+
+## Lens ##
+
+ * Focus in nested properties
+ * Perform action over them
+   * Getting a property
+   * Setting a property
+   * Call a function on a property
+ * Immutable
+
+### Getting ###
+
+```javascript
+const game = {
+  name: 'Keep Talking and Nobody Explodes',
+  genres: ['Puzzle', 'VR'],
+  publisher: {
+    name: 'Steel Crate Games',
+    location: 'Ottawa, Canada'
+  }
+};
+
+const name = R.lensProp('name');
+R.view(name, game); // => 'Keep Talking and Nobody Explodes'
+
+const first = R.lensIndex(0);
+R.view(first, game.genres); // => 'Puzzle'
+
+const publisherName = R.lensPath(['publisher', 'name']);
+R.view(publisherName, game); // => 'Steel Crate Games'
+
+// You can also reference indexes with lensPath
+const firstGenre = R.lensPath(['genre', 0]);
+R.view(firstGenre, game); // => 'Puzzle'
+```
+
+### Setting ###
+
+```javascript
+const game = {
+  name: 'Overcooked',
+  platforms: ['PS4', 'XB1', 'NS', 'PC'],
+  publisher: {
+    name: 'Team 17',
+    location: 'Wakefield, England'
+  }
+};
+
+const firstPlatform = R.lensPath(['platforms', 0]);
+const newGame = R.set(firstPlatform, 'PS5', game);
+/* =>
+  {
+    name: 'Overcooked',
+    platforms: ['PS5', 'XB1', 'NS', 'PC'],
+    publisher: {
+      name: 'Team 17',
+      location: 'Wakefield, England'
+    }
+  }
+*/
+
+// Shallow clone
+game.platforms === newGame.platforms; // => false
+game.publisher === newGame.publisher; // => true
+```
+
+### Calling functions ###
+
+```javascript
+const person = {
+  name: 'Bev',
+  gender: 'female'
+};
+const addMs = (name) => `Ms. ${name}`;
+const nameLens = R.lensProp('name');
+R.over(nameLens, addMs, person);
+/* => {
+    name: 'Ms. Bev',
+    gender: 'female'
+  }
+*/
+```
+
+### One more example ###
+
+```javascript
+const person = {
+  name: 'Terry',
+  cats: [{
+    name: 'Korin',
+    age: 4
+  }, {
+    name: 'Sweep',
+    age: 3
+  }, {
+    name: 'Catarina',
+    age: 2
+  }]
+};
+
+const double = R.multiply(2);
+const cats = R.lensProp('cats');
+const age = R.lensProp('age');
+const doubleCatsAge = R.over(
+  cats, 
+  R.map(R.over(age, double))
+);
+
+doubleCatsAge(person);
+/* => {
+    name: 'Terry',
+    cats: [{
+      name: 'Korin',
+      age: 8
+    }, {
+      name: 'Sweep',
+      age: 6
+    }, {
+      name: 'Catarina',
+      age: 4
+    }]
+  }
+*/
+```
+
+## More Functions ##
 
 
 ## References ##
