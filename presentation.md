@@ -99,7 +99,7 @@ const R = require('ramda');
 
 #### All functions are curried ####
 
-(snippets/01-curried.js)
+[snippets/01-curried.js]
 ```javascript
 // `prop` takes two arguments. If I just give it one, I get a function back
 const moo = R.prop('moo');
