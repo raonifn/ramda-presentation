@@ -76,7 +76,7 @@ const R = require('ramda');
  * Why Ramda?
  * Curry
  * Composition
- * Lens
+ * Lenses
  * More Functions
  * References
 
@@ -99,6 +99,7 @@ const R = require('ramda');
 
 #### All functions are curried ####
 
+(snippets/01-curried.js)
 ```javascript
 // `prop` takes two arguments. If I just give it one, I get a function back
 const moo = R.prop('moo');
@@ -203,7 +204,7 @@ const mathPipe = R.pipe(
 mathPipe(10); // => 21
 ```
 
-## Lens ##
+## Lenses ##
 
  * Focus in nested properties
  * Perform action over them
@@ -325,6 +326,34 @@ doubleCatsAge(person);
     }]
   }
 */
+```
+
+### Composing Lenses ###
+
+```javascript
+const enabledLens = R.lensProp('enabled');
+
+// Combined lenses
+const sshServiceLens = R.lensProp('sshService');
+const sshServiceEnabledLens = R.compose(sshServiceLens, enabledLens);
+
+const telnetServiceLens = R.lensProp('telnetService');
+const telnetServiceEnabledLens = R.compose(telnetServiceLens, enabledLens);
+
+// Usage
+const services = {
+  sshService: { enabled: true },
+  telnetService: { enabled: false },
+};
+
+R.view(sshServiceEnabledLens, services); // => true
+R.view(telnetServiceEnabledLens, services); // => false
+```
+
+### Code, Code, Code ###
+
+```javascript
+
 ```
 
 ## More Functions ##
