@@ -109,27 +109,15 @@ const value = moo({moo: 'cow'}); // => 'cow'
 
 ##### Composing #####
 
+[snippets/02-curring-composing.js](snippets/02-curring-composing.js)
 ```javascript
-// take an object with an `amount` property
-// add one to it
-// find its remainder when divided by 7
-const amtAdd1Mod7 = R.compose(R.moduloBy(7), R.add(1), R.prop('amount'));
+const increment = x => x + 1
+const double = x => x * 2
+const doublePlusOne = x => increment(double(x))
+doublePlusOne(10); // => 21
 
-// we can use that as is:
-amtAdd1Mod7({amount: 17}); // => 4
-amtAdd1Mod7({amount: 987}); // => 1
-amtAdd1Mod7({amount: 68}); // => 6
-```
-
-```javascript
-const amountObjects = [ {amount: 903}, {amount: 2875654}, {amount: 6} ]
-R.map(amtAdd1Mod7, amountObjects); // => [1, 6, 0]
-
-// of course, `map` is also curried, so you can generate a new function
-// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to
-// get passed in:
-const amountsToValue = map(amtAdd1Mod7);
-amountsToValue(amountObjects); // => [1, 6, 0]
+const twicePlusOne = R.compose(R.add(1), R.multiply(2));
+twicePlusOne(10); // => 21
 ```
 
 #### Undescore / Loadash Style ####
@@ -151,16 +139,17 @@ const validUsersNamedBuzz = R.filter(R.where(
 
 **Haskel Curry**
 
+[snippets/03-curry.js](snippets/03-curry.js)
 ```javascript
 // Normal function
 const aFunc = (a, b, c) => a * b + c;
-aFunct(1, 2, 3); // => 5
+aFunc(1, 2, 3); // => 5
 
 //Curried function
-const anotheF = a => b => c => a * b + c;
+const anotherF = a => b => c => a * b + c;
 anotherF(1)(2)(3); // => 5
 
-const ramdaCurryF => R.curry((a, b, c) => a * b + c);
+const ramdaCurryF = R.curry((a, b, c) => a * b + c);
 ramdaCurryF(1, 2, 3); // => 5
 ramdaCurryF(1, 2)(3); // => 5
 ramdaCurryF(1)(2, 3); // => 5
@@ -169,6 +158,8 @@ ramdaCurryF(1, 2); // => a function
 
 ### Namely specialisation ###
 
+
+[snippets/04-namely-specialisation.js](snippets/04-namely-specialisation.js)
 ```javascript
 const formatNames = R.curry((first, middle, last) => `${first} ${middle} ${last}`);
 formatNames('John', 'Paul', 'Jones'); //=> 'John Paul Jones'
@@ -183,14 +174,28 @@ jp('Georgeandringo'); //=> 'John Paul Georgeandringo' (rockers)
 
 ## Composition ##
 
-```javascript
-const increment = x => x + 1
-const double = x => x * 2
-const doublePlusOne = x => increment(double(x))
-doublePlusOne(10); // => 21
 
-const twicePlusOne = R.compose(R.add(1), R.multiply(2));
-twicePlusOne(10); // => 21
+```javascript
+// take an object with an `amount` property
+// add one to it
+// find its remainder when divided by 7
+const amtAdd1Mod7 = R.compose(R.modulo(R.__, 7), R.add(1), R.prop('amount'));
+
+// we can use that as is:
+amtAdd1Mod7({amount: 17}); // => 4
+amtAdd1Mod7({amount: 987}); // => 1
+amtAdd1Mod7({amount: 68}); // => 6
+```
+
+```javascript
+const amountObjects = [ {amount: 903}, {amount: 2875654}, {amount: 6} ]
+R.map(amtAdd1Mod7, amountObjects); // => [1, 6, 0]
+
+// of course, `map` is also curried, so you can generate a new function
+// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to
+// get passed in:
+const amountsToValue = R.map(amtAdd1Mod7);
+amountsToValue(amountObjects); // => [1, 6, 0]
 ```
 
 ### Pipe to the rescue ###
@@ -440,3 +445,24 @@ mods(game);
 
 # Thanks! #
 
+ * <https://github.com/raonifn/ramda-presentation>
+
+```
+█████████████████████████████████
+██ ▄▄▄▄▄ █▀▀ ██▀█ █▄ ▄▀█ ▄▄▄▄▄ ██
+██ █   █ █▄▀██▀█ ▀█▄ ▄▄█ █   █ ██
+██ █▄▄▄█ █ ▄ █  ▄ ▄▄▄▀██ █▄▄▄█ ██
+██▄▄▄▄▄▄▄█ █ ▀▄█ █ ▀ █▄█▄▄▄▄▄▄▄██
+██  █▄▀█▄▄▀▀█  ▄▄█▀▀██▀█ ▄▄▀▄▄▀██
+██ ██▄▄ ▄▀ ▀▀  ▀▀▀█▄█▄ ▄██ ▄  ███
+██ ▄▀█▄█▄█ █▄ █▄▀██▄█▀▀ ▄██▄█▄▄██
+██▀▀▀█▀ ▄▀ ▄  █▀▄▀▀▀██ ▀ ▄▄ ▄ ▄██
+██▄▀▀▀██▄▀█▄▄█ ▀▀▄█ ▄█ ▀▀ █▀█▄▀██
+██▄██ ▀ ▄▀█▄█▄ █ ▀▀ ▀█▀ █  ██  ██
+██▄██▄▄▄▄█▀ █▀▄  █ ▀▀  ▄▄▄ █ ▀▀██
+██ ▄▄▄▄▄ █▄█ ▀  ▀▀▀▄▄█ █▄█ ▀▀▄███
+██ █   █ █▀▄ ▄  ██▄ █▀ ▄   ▀▀ ███
+██ █▄▄▄█ █▀▄▄▄▀▀▀▀▀    ▀██ ▄▄▀▄██
+██▄▄▄▄▄▄▄█▄▄▄▄▄██▄█▄██▄▄▄▄▄▄█▄███
+█████████████████████████████████
+```
