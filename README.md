@@ -278,6 +278,7 @@ game.publisher === newGame.publisher; // => true
 
 ### Calling functions ###
 
+[snippets/09-lenses-calling.js](snippets/09-lenses-calling.js)
 ```javascript
 const person = {
   name: 'Bev',
@@ -295,6 +296,7 @@ R.over(nameLens, addMs, person);
 
 ### One more example ###
 
+[snippets/10-lenses-more-example.js](snippets/10-lenses-more-example.js)
 ```javascript
 const person = {
   name: 'Terry',
@@ -337,6 +339,7 @@ doubleCatsAge(person);
 
 ### Composing Lenses ###
 
+[snippets/11-lenses-composing.js](snippets/11-lenses-composing.js)
 ```javascript
 const enabledLens = R.lensProp('enabled');
 
@@ -359,6 +362,7 @@ R.view(telnetServiceEnabledLens, services); // => false
 
 ### Code, Code, Code ###
 
+[snippets/12-lenses-code-code.js](snippets/12-lenses-code-code.js)
 ```javascript
 const game = {
   name: 'Dead Nation',
@@ -429,6 +433,7 @@ mods(game);
  * union, difference, intersection
 
  * gt, gte, lt, lte
+   [snippets/13-placeholder.js](snippets/13-placeholder.js)
    ```javascript
    R.gt(2, 1); //=> true
    R.gt(2, 2); //=> false
