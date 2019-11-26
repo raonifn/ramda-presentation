@@ -454,7 +454,6 @@ mods(game);
 # Thanks! #
 
  * <https://github.com/raonifn/ramda-presentation>
-
 ```
 █████████████████████████████████
 ██ ▄▄▄▄▄ █▀▀ ██▀█ █▄ ▄▀█ ▄▄▄▄▄ ██
