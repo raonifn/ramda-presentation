@@ -99,7 +99,7 @@ const R = require('ramda');
 
 #### All functions are curried ####
 
-[snippets/01-curried.js]
+[snippets/01-curried.js](snippets/01-curried.js)
 ```javascript
 // `prop` takes two arguments. If I just give it one, I get a function back
 const moo = R.prop('moo');
@@ -119,14 +119,14 @@ const amtAdd1Mod7 = R.compose(R.moduloBy(7), R.add(1), R.prop('amount'));
 amtAdd1Mod7({amount: 17}); // => 4
 amtAdd1Mod7({amount: 987}); // => 1
 amtAdd1Mod7({amount: 68}); // => 6
-``` 
+```
 
 ```javascript
 const amountObjects = [ {amount: 903}, {amount: 2875654}, {amount: 6} ]
 R.map(amtAdd1Mod7, amountObjects); // => [1, 6, 0]
 
-// of course, `map` is also curried, so you can generate a new function 
-// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to 
+// of course, `map` is also curried, so you can generate a new function
+// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to
 // get passed in:
 const amountsToValue = map(amtAdd1Mod7);
 amountsToValue(amountObjects); // => [1, 6, 0]
@@ -146,7 +146,6 @@ const validUsersNamedBuzz = user =>
 const validUsersNamedBuzz = R.filter(R.where(
  { name: 'Buzz', errors: R.isEmpty }));
 ```
-    
 
 ## Curry ##
 
@@ -353,14 +352,86 @@ R.view(telnetServiceEnabledLens, services); // => false
 ### Code, Code, Code ###
 
 ```javascript
-
+const game = {
+  name: 'Dead Nation',
+  genres: ['Twin Stick Shooter', 'Shoot em up'],
+  publisher: {
+    name: 'Sony Interactive',
+    location: 'California, USA'
+  }
+};
+const reverse = R.pipe(R.split(''), R.reverse, R.join(''));
+const name = R.lensProp('name');
+const publisherName = R.lensPath(['publisher', 'name']);
+const genres = R.lensProp('genres')
+const mods = R.compose(
+  R.set(name, 'Alienation'),
+  R.over(publisherName, R.toUpper),
+  R.over(genres, R.map(reverse))
+);
+mods(game);
+/* => {
+    name: 'Alienation',
+    genres: ['retoohS kcitS niwT', 'pu me toohS'],
+    publisher: {
+      name: 'SONY INTERACTIVE',
+      location: 'California, USA'
+    }
+  }
+*/
 ```
 
 ## More Functions ##
 
+ * Math
+ * List
+ * Object
+ * Logic
+ * Relation
+
+### Math ###
+
+ * add, subtract, divide, multiply, modulo
+ * inc, dec, negate
+ * mean, median, product, sum
+
+### List ###
+
+ * filter, map, reduce, reject, find, forEach
+ * take, head, tail, nth
+ * flatten, slice, append, drop, groupBy, reverse
+ * includes, all, any, none
+
+### Object ###
+
+ * keys, values, pick, omit, prop, path
+ * assoc, dissoc, merge, clone
+ * invert, has, evolve
+
+### Logic ###
+
+ * and, or, not, both, either, complement
+ * ifElse, when, unless
+ * isEmpty, propSatisfies
+
+### Relation ###
+
+ * equals, identical, propEq, pathEq
+ * max, min, clamp
+ * union, difference, intersection
+
+ * gt, gte, lt, lte
+   ```javascript
+   R.gt(2, 1); //=> true
+   R.gt(2, 2); //=> false
+   const isGreaterThanTwo = R.gt(R.__, 2);
+   isGreaterThanTwo(1); // => false
+   isGreaterThanTwo(3); // => true
+   ```
 
 ## References ##
 
+ * <https://ramdajs.com/docs>
  * <https://itnext.io/a-beginners-guide-to-ramda-part-1-7e4a34972e97>
  * <https://itnext.io/a-beginners-guide-to-ramda-part-2-lenses-62bdd3993598>
  * <http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda>
