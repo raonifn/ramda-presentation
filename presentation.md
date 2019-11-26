@@ -89,7 +89,7 @@ const R = require('ramda');
 
  * Purer Functional
    * Immutability
-   * Side-effects
+   * No Side-effects
 
  * All functions are curried
    * It's easy composing functions
@@ -174,7 +174,7 @@ jp('Georgeandringo'); //=> 'John Paul Georgeandringo' (rockers)
 
 ## Composition ##
 
-
+[snippets/05-composition.js](snippets/05-composition.js)
 ```javascript
 // take an object with an `amount` property
 // add one to it
@@ -200,11 +200,12 @@ amountsToValue(amountObjects); // => [1, 6, 0]
 
 ### Pipe to the rescue ###
 
+[snippets/06-pipe.js](snippets/06-pipe.js)
 ```javascript
 const mathPipe = R.pipe(
   R.multiply(4),
   R.add(2),
-  R.divide(2));
+  R.divide(R.__, 2));
 mathPipe(10); // => 21
 ```
 
@@ -219,6 +220,7 @@ mathPipe(10); // => 21
 
 ### Getting ###
 
+[snippets/07-lenses-getting.js](snippets/07-lenses-getting.js)
 ```javascript
 const game = {
   name: 'Keep Talking and Nobody Explodes',
@@ -239,12 +241,13 @@ const publisherName = R.lensPath(['publisher', 'name']);
 R.view(publisherName, game); // => 'Steel Crate Games'
 
 // You can also reference indexes with lensPath
-const firstGenre = R.lensPath(['genre', 0]);
+const firstGenre = R.lensPath(['genres', 0]);
 R.view(firstGenre, game); // => 'Puzzle'
 ```
 
 ### Setting ###
 
+[snippets/08-lenses-setting.js](snippets/08-lenses-setting.js)
 ```javascript
 const game = {
   name: 'Overcooked',
