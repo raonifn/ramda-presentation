@@ -58,7 +58,7 @@ d'...'xWMMMMMMMMMMMMMMMMMMMMMMMMK:. ..'l
 ```
 
 ```bash
-npm install ramdajs
+npm install ramda
 ```
 
 ```javascript
